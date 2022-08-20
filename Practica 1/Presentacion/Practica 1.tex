@@ -1,0 +1,309 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[right=.75in, left=1.5in, top=1.25in, bottom=1.25in]{geometry}
+\usepackage{setspace}
+\usepackage{fancyhdr}
+\usepackage{imakeidx}
+\usepackage{multirow}
+\usepackage{tikz}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={Overleaf Example},
+    pdfpagemode=FullScreen,
+    }
+    
+\title{Práctica 1}
+\author{Christian Néstor Barriga Marcapura\\
+        Weimar Ccapatinta Huamani}
+\date{Agosto 20, 2022}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+\newpage
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Algoritmos y Estructura de datos}
+\rhead{Práctica 1}
+\chead{UNSA}
+\rfoot{\thepage}{}
+\section{Introducción}
+\doublespacing El análisis de algoritmos puede entenderse como la estimación del consumo de recursos que un algoritmo requiere, proporcionando herramientas para poder estimar si una solución propuesta satisface las restricciones de recursos de un problema sin necesidad de implementarlo \cite{Villegas Jaramillo Eduardo et all}.\\
+En la práctica 1 vamos a realizar un análisis cuatro algoritmos de ordenamiento con tres tipos de programación, obteniendo de esta manera un cuadro comparativo, del cual a partir de ello evaluaremos que tipo de lenguaje es mucho mas funcional respecto al algoritmo probado, para tal motivo se esta utilizando el mismo ordenador, asi como editor de texto para poder mantener las mismas condiciones para los diversos tipos de lenguaje.
+
+\section{Algoritmos}
+\doublespacing Se han evaluado los siguientes algoritmos:
+\subsection{Merge -sort}
+Algoritmo basado en la técnica DyV
+\begin{itemize}
+    \item Divide el vector en dos partes iguales.
+    \item Ordena por separado cada una de las partes (llamando recursivamente a ordenaPorFusión).
+    \item mezcla ambas partes manteniendo la ordenación.
+\end{itemize}
+\textbf{Algoritmo Merge Sort}\\
+\definecolor{Micolor1}{RGB}{45,87,44}
+\newcommand\tab[1][1cm]{\hspace*{#1}}
+\textcolor{Micolor1}{
+\tab dividir cada elemento en particiones de tamaño 1\\
+\tab fusionar recursivamente particiones adyacentes\\}
+\tab for i = leftPartIdx to rightPartIdx\\
+\tab \tab   if leftPartHeadValue $<=$ rightPartHeadValue\\
+\tab \tab \tab      copy leftPartHeadValue\\
+\tab \tab    else: copy rightPartHeadValue; Increase InvIdx\\
+\textcolor{Micolor1}{
+\tab copiar elementos de nuevo a la matriz original}
+    
+\textbf{Costo Computacional}\\
+La longitud de la Lista es N\\
+Dos listas N/2\\
+El tiempo a*N\\
+Suposición $N = 2^k$
+
+Cuando la lista es pequeña  $T(1) = T(0)= b$\\
+$T(N) = 2* T(N/2) + a* N$
+
+\begin{equation}
+T(N) = T(2^k) = 2*T(2^k-1)+a*2^k
+\end{equation}
+\begin{equation}
+T(N) = 2 * (2 * T(2^k-2) + a* 2^k-1) + a * 2^k
+\end{equation}
+\begin{equation}
+= 2^k*T(1)+k*a*2^k
+\end{equation}
+\begin{equation}
+= b*2^k+k*a*2^k
+\end{equation}
+$k = log2 N$
+
+En consecuencia
+\begin{equation}
+T(N)\equiv b*N+a*N*Log2 N
+\end{equation}
+\subsection{Quick -sort}
+Es un algoritmo DyV muy parecido al de la selección (búsqueda del k-ésimo menor elemento):
+\begin{itemize}
+    \item se reorganiza la tabla en dos subtablas respecto a un pivote: elementos mayores o iguales a un lado y menores al otro, después de la reorganización, el pivote ocupa exactamente el lugar que le corresponderá en la lista ordenada
+    \item se repite el proceso de forma recursiva para cada subtabla
+\end{itemize}
+
+\textbf{Algoritmo Quick Sort}\\
+
+\tab para cada partición (sin ordenar)\\
+\tab establecer el primer elemento como pivote\\
+\tab\tab   storeIndex = pivotIndex+1\\
+\tab\tab   for i = pivotIndex+1 to rightmostIndex\\
+\tab\tab\tab     if ((a[i] < a[pivot]) o (igual pero 50p/ciento afortunado))\\
+\tab\tab       swap(i, índicetienda); ++storeIndex\\
+\tab   intercambio (pivote, storeIndex-1)\\
+\textbf{Costo Computacional}\\
+Su tiempo es menor que e de todos los algoritmos de ordenación de complejiad O(n log n)
+\begin{center}
+   \begin{tabular}{|c|c|c|}
+\hline 
+\textbf{Pivote} & \textbf{Peor caso} & \textbf{Caso Promedio}\tabularnewline
+\hline 
+primer elemento & \textbf{O($n^2$)} & O(n log n)\tabularnewline\hline 
+intermedio de los elementos & \textbf{O($n^2$)} & O(n log n)\tabularnewline\hline 
+pseudo-mediana & O(n log n) & O(n log n)\tabularnewline\hline 
+\end{tabular} 
+\end{center}
+Podemos imaginar un comportamiento parecido al Merge sort\\
+$T(N) \equiv N * log2 N$
+
+\subsection{Insertion -sort}
+Este algoritmo divide la tabla en una parte ordenada y otra no
+\begin{itemize}
+    \item la parte ordenada comienza estando formada por un único elemento (el que ocupa la primera posición de la tabla)
+    \item los elementos son insertados uno a uno desde la parte no ordenada a la ordenada
+    \item finalmente la parte ordenada acaba abarcando toda la tabla
+\end{itemize}
+\textbf{Algoritmo Insertion Sort}\\
+\tab marcar el primer elemento como ordenado\\
+\tab para cada elemento sin clasificar X\\
+\tab \tab    'extraer' el elemento X\\
+\tab \tab    for j = lastSortedIndex hasta 0\\
+\tab \tab \tab      if elelemento actual j > X\\
+\tab \tab \tab        mover elemento ordenado a la derecha por 1\\
+\tab \tab      romper bucle e insertar X aquí\\
+
+\textbf{Costo Computacional}\\
+\begin{equation}
+c1+c2+c3+...c(n-1)=c(1+2+3+...+(n-1))
+\end{equation}
+\begin{equation}
+C(n-1+1)((n-1)/2)=cn^2/2-cn/2
+\end{equation}
+Al utilizar una notación grande, podemos descartar $cn/2$\\
+El peor caso se da cuando la tabla se encuentra inicialmente ordenada en orden decreciente
+\begin{equation}
+T(n)=\theta(n^2)
+\end{equation}
+Cuando la tabla esta ordenada su tiempo de ejecución es:
+\begin{equation}
+T(n)= \theta(n)
+\end{equation}
+\subsection{Radix -sort}
+Es una generalización del método de ordenación por cajas
+El método se puede aplicar siempre que los valores a ordenar sean secuencias de dígitos (o letras)
+\begin{itemize}
+    \item se crea una cola para cada dígito
+    \item se encola cada elemento en la cola correspondiente a su dígito menos significativo
+    \item se vuelcan los contenidos de las colas en el array
+    \item se vuelven a encolar, ahora en base a su segundo dígito menos significativo y así sucesivamente
+\end{itemize}
+
+\textbf{Algoritmo Radix Sort}\\
+\tab crear 10 cubos (colas) para cada dígito (0 a 9)\\
+\tab por cada digito colocado\\
+\tab   para cada elemento en la lista\\
+\tab \tab     mover el elemento al cubo respectivo\\
+\tab   para cada cubo, a partir del dígito más pequeño\\
+\tab \tab     mientras el cubo no está vacío\\
+\tab \tab      restaurar elemento a la lista\\
+
+
+\textbf{Costo Computacional}\\
+Análisis de eficiencia\\
+• El lazo externo se realiza k veces\\
+• El primer lazo se realiza n veces\\
+• Los lazos anidados para volcar las cajas en el array se realizan\\
+en el peor caso b+n-1 veces (O(n) cuando b$<<$n)\\
+• Luego su eficiencia es O(k*n)
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Algoritmos y Estructura de datos}
+\rhead{Práctica 1}
+\chead{UNSA}
+\rfoot{\thepage}{}
+\section{Implementación}
+La implementación se realizó en 
+se envía el siguiente enlace en Github:
+
+\url{https://github.com/weicap/MCC_practica_1.git}
+
+\section{Resultados}
+Luego de realizar la implementación de los algoritmos en diversos tipos de lenguaje, se obtuvieron los siguientes resultados.
+\subsection{Tabla Comparativa con el promediode tiempo de procesamiento y SD}
+El cuadro comparativo se muestra a continuación:
+\begin{table}[]
+\begin{tabular}{|c|c|ll|ll|ll|}
+\hline
+\multirow{2}{*}{\textbf{Modelo}}           & \multirow{2}{*}{\textbf{Muestra}} & \multicolumn{2}{c|}{\textbf{Python}}                                   & \multicolumn{2}{c|}{\textbf{Go}}                                       & \multicolumn{2}{c|}{\textbf{C++}}                                      \\ \cline{3-8} 
+                                           &                                   & \multicolumn{1}{c|}{\textbf{Mean}} & \multicolumn{1}{c|}{\textbf{STD}} & \multicolumn{1}{c|}{\textbf{Mean}} & \multicolumn{1}{c|}{\textbf{STD}} & \multicolumn{1}{c|}{\textbf{Mean}} & \multicolumn{1}{c|}{\textbf{STD}} \\ \hline
+\multirow{15}{*}{\textbf{Insertion\_sort}} & \textbf{100}                      & \multicolumn{1}{l|}{0.2582}        & 0.022073                          & \multicolumn{1}{l|}{1.1676}        & 0.046554                          & \multicolumn{1}{l|}{1.8964}        & 0.039298                          \\ \cline{2-8} 
+                                           & \textbf{1000}                     & \multicolumn{1}{l|}{0.2846}        & 0.003362                          & \multicolumn{1}{l|}{1.1552}        & 0.019537                          & \multicolumn{1}{l|}{1.8376}        & 0.013831                          \\ \cline{2-8} 
+                                           & \textbf{2000}                     & \multicolumn{1}{l|}{0.4222}        & 0.02915                           & \multicolumn{1}{l|}{1.361}         & 0.039592                          & \multicolumn{1}{l|}{1.8756}        & 0.017271                          \\ \cline{2-8} 
+                                           & \textbf{3000}                     & \multicolumn{1}{l|}{0.7336}        & 0.064162                          & \multicolumn{1}{l|}{1.355}         & 0.022946                          & \multicolumn{1}{l|}{1.9192}        & 0.044144                          \\ \cline{2-8} 
+                                           & \textbf{4000}                     & \multicolumn{1}{l|}{0.9352}        & 0.024345                          & \multicolumn{1}{l|}{1.3458}        & 0.019575                          & \multicolumn{1}{l|}{1.8956}        & 0.016288                          \\ \cline{2-8} 
+                                           & \textbf{5000}                     & \multicolumn{1}{l|}{1.2228}        & 0.036622                          & \multicolumn{1}{l|}{1.4232}        & 0.055468                          & \multicolumn{1}{l|}{1.9534}        & 0.051306                          \\ \cline{2-8} 
+                                           & \textbf{6000}                     & \multicolumn{1}{l|}{1.6332}        & 0.020055                          & \multicolumn{1}{l|}{1.4696}        & 0.044287                          & \multicolumn{1}{l|}{1.948}         & 0.019837                          \\ \cline{2-8} 
+                                           & \textbf{7000}                     & \multicolumn{1}{l|}{2.1264}        & 0.031548                          & \multicolumn{1}{l|}{1.4638}        & 0.050584                          & \multicolumn{1}{l|}{2.01}          & 0.056445                          \\ \cline{2-8} 
+                                           & \textbf{8000}                     & \multicolumn{1}{l|}{2.6892}        & 0.024056                          & \multicolumn{1}{l|}{1.468}         & 0.013285                          & \multicolumn{1}{l|}{2.0056}        & 0.044948                          \\ \cline{2-8} 
+                                           & \textbf{9000}                     & \multicolumn{1}{l|}{3.5332}        & 0.157986                          & \multicolumn{1}{l|}{1.5288}        & 0.02827                           & \multicolumn{1}{l|}{2.112}         & 0.109117                          \\ \cline{2-8} 
+                                           & \textbf{10000}                    & \multicolumn{1}{l|}{4.1098}        & 0.049605                          & \multicolumn{1}{l|}{1.6232}        & 0.088106                          & \multicolumn{1}{l|}{2.0164}        & 0.023234                          \\ \cline{2-8} 
+                                           & \textbf{20000}                    & \multicolumn{1}{l|}{16.307}        & 1.155462                          & \multicolumn{1}{l|}{2.1204}        & 0.040097                          & \multicolumn{1}{l|}{2.3698}        & 0.121401                          \\ \cline{2-8} 
+                                           & \textbf{30000}                    & \multicolumn{1}{l|}{36.6776}       & 0.822062                          & \multicolumn{1}{l|}{3.2256}        & 0.057121                          & \multicolumn{1}{l|}{2.5398}        & 0.030947                          \\ \cline{2-8} 
+                                           & \textbf{40000}                    & \multicolumn{1}{l|}{65.5718}       & 0.978431                          & \multicolumn{1}{l|}{4.4314}        & 0.033239                          & \multicolumn{1}{l|}{3.0338}        & 0.033432                          \\ \cline{2-8} 
+                                           & \textbf{50000}                    & \multicolumn{1}{l|}{104.2486}      & 1.771072                          & \multicolumn{1}{l|}{6.2008}        & 0.084188                          & \multicolumn{1}{l|}{3.637}         & 0.055109                          \\ \hline
+\multirow{15}{*}{\textbf{Merge\_sort}}     & \textbf{100}                      & \multicolumn{1}{l|}{0.265}         & 0.020724                          & \multicolumn{1}{l|}{1.1264}        & 0.044003                          & \multicolumn{1}{l|}{1.8858}        & 0.031878                          \\ \cline{2-8} 
+                                           & \textbf{1000}                     & \multicolumn{1}{l|}{0.2616}        & 0.018147                          & \multicolumn{1}{l|}{1.157}         & 0.037195                          & \multicolumn{1}{l|}{1.9184}        & 0.046312                          \\ \cline{2-8} 
+                                           & \textbf{2000}                     & \multicolumn{1}{l|}{0.2742}        & 0.022621                          & \multicolumn{1}{l|}{1.2536}        & 0.075913                          & \multicolumn{1}{l|}{1.9546}        & 0.061906                          \\ \cline{2-8} 
+                                           & \textbf{3000}                     & \multicolumn{1}{l|}{0.2854}        & 0.023628                          & \multicolumn{1}{l|}{1.2242}        & 0.057072                          & \multicolumn{1}{l|}{2.042}         & 0.072612                          \\ \cline{2-8} 
+                                           & \textbf{4000}                     & \multicolumn{1}{l|}{0.267}         & 0.006403                          & \multicolumn{1}{l|}{1.2038}        & 0.051655                          & \multicolumn{1}{l|}{1.9768}        & 0.027968                          \\ \cline{2-8} 
+                                           & \textbf{5000}                     & \multicolumn{1}{l|}{0.268}         & 0.004301                          & \multicolumn{1}{l|}{1.2808}        & 0.052599                          & \multicolumn{1}{l|}{2.0426}        & 0.094841                          \\ \cline{2-8} 
+                                           & \textbf{6000}                     & \multicolumn{1}{l|}{0.2726}        & 0.004506                          & \multicolumn{1}{l|}{1.2304}        & 0.039068                          & \multicolumn{1}{l|}{1.9896}        & 0.034428                          \\ \cline{2-8} 
+                                           & \textbf{7000}                     & \multicolumn{1}{l|}{0.2796}        & 0.011567                          & \multicolumn{1}{l|}{1.269}         & 0.034706                          & \multicolumn{1}{l|}{2.0532}        & 0.080388                          \\ \cline{2-8} 
+                                           & \textbf{8000}                     & \multicolumn{1}{l|}{0.2872}        & 0.004868                          & \multicolumn{1}{l|}{1.3858}        & 0.053471                          & \multicolumn{1}{l|}{2.023}         & 0.09639                           \\ \cline{2-8} 
+                                           & \textbf{9000}                     & \multicolumn{1}{l|}{0.2892}        & 0.009039                          & \multicolumn{1}{l|}{1.3096}        & 0.031286                          & \multicolumn{1}{l|}{2.0296}        & 0.033642                          \\ \cline{2-8} 
+                                           & \textbf{10000}                    & \multicolumn{1}{l|}{0.292}         & 0.006819                          & \multicolumn{1}{l|}{1.3286}        & 0.038279                          & \multicolumn{1}{l|}{2.1186}        & 0.168274                          \\ \cline{2-8} 
+                                           & \textbf{20000}                    & \multicolumn{1}{l|}{0.3424}        & 0.008019                          & \multicolumn{1}{l|}{1.5504}        & 0.027537                          & \multicolumn{1}{l|}{2.1232}        & 0.052813                          \\ \cline{2-8} 
+                                           & \textbf{30000}                    & \multicolumn{1}{l|}{0.3942}        & 0.007887                          & \multicolumn{1}{l|}{1.8946}        & 0.060331                          & \multicolumn{1}{l|}{2.073}         & 0.018466                          \\ \cline{2-8} 
+                                           & \textbf{40000}                    & \multicolumn{1}{l|}{0.4612}        & 0.025956                          & \multicolumn{1}{l|}{2.0662}        & 0.122383                          & \multicolumn{1}{l|}{2.214}         & 0.303309                          \\ \cline{2-8} 
+                                           & \textbf{50000}                    & \multicolumn{1}{l|}{0.5106}        & 0.004506                          & \multicolumn{1}{l|}{2.0088}        & 0.188159                          & \multicolumn{1}{l|}{2.1226}        & 0.152218                          \\ \hline
+\multirow{15}{*}{\textbf{Quick\_sort}}      & \textbf{100}                      & \multicolumn{1}{l|}{0.2802}        & 0.027087                          & \multicolumn{1}{l|}{1.1646}        & 0.033754                          & \multicolumn{1}{l|}{1.998}         & 0.048806                          \\ \cline{2-8} 
+                                           & \textbf{1000}                     & \multicolumn{1}{l|}{0.25}          & 0.018262                          & \multicolumn{1}{l|}{1.1878}        & 0.034186                          & \multicolumn{1}{l|}{1.9858}        & 0.015418                          \\ \cline{2-8} 
+                                           & \textbf{2000}                     & \multicolumn{1}{l|}{0.2692}        & 0.037963                          & \multicolumn{1}{l|}{1.1432}        & 0.029457                          & \multicolumn{1}{l|}{2.052}         & 0.085141                          \\ \cline{2-8} 
+                                           & \textbf{3000}                     & \multicolumn{1}{l|}{0.2632}        & 0.01436                           & \multicolumn{1}{l|}{1.1816}        & 0.02988                           & \multicolumn{1}{l|}{2.0358}        & 0.075145                          \\ \cline{2-8} 
+                                           & \textbf{4000}                     & \multicolumn{1}{l|}{0.294}         & 0.036959                          & \multicolumn{1}{l|}{1.1726}        & 0.043644                          & \multicolumn{1}{l|}{2.028}         & 0.040515                          \\ \cline{2-8} 
+                                           & \textbf{5000}                     & \multicolumn{1}{l|}{0.2748}        & 0.019791                          & \multicolumn{1}{l|}{1.1784}        & 0.052643                          & \multicolumn{1}{l|}{2.0276}        & 0.039475                          \\ \cline{2-8} 
+                                           & \textbf{6000}                     & \multicolumn{1}{l|}{0.2876}        & 0.030632                          & \multicolumn{1}{l|}{1.1742}        & 0.036024                          & \multicolumn{1}{l|}{2.0836}        & 0.044484                          \\ \cline{2-8} 
+                                           & \textbf{7000}                     & \multicolumn{1}{l|}{0.2798}        & 0.015975                          & \multicolumn{1}{l|}{1.2142}        & 0.08764                           & \multicolumn{1}{l|}{2.0584}        & 0.030908                          \\ \cline{2-8} 
+                                           & \textbf{8000}                     & \multicolumn{1}{l|}{0.2844}        & 0.018929                          & \multicolumn{1}{l|}{1.158}         & 0.039516                          & \multicolumn{1}{l|}{2.1194}        & 0.07614                           \\ \cline{2-8} 
+                                           & \textbf{9000}                     & \multicolumn{1}{l|}{0.278}         & 0.007176                          & \multicolumn{1}{l|}{1.1744}        & 0.031053                          & \multicolumn{1}{l|}{2.1172}        & 0.10512                           \\ \cline{2-8} 
+                                           & \textbf{10000}                    & \multicolumn{1}{l|}{0.2864}        & 0.007266                          & \multicolumn{1}{l|}{1.3216}        & 0.106667                          & \multicolumn{1}{l|}{2.1456}        & 0.11927                           \\ \cline{2-8} 
+                                           & \textbf{20000}                    & \multicolumn{1}{l|}{0.3438}        & 0.035682                          & \multicolumn{1}{l|}{1.2868}        & 0.098047                          & \multicolumn{1}{l|}{2.1128}        & 0.077283                          \\ \cline{2-8} 
+                                           & \textbf{30000}                    & \multicolumn{1}{l|}{0.3452}        & 0.007791                          & \multicolumn{1}{l|}{1.1836}        & 0.026576                          & \multicolumn{1}{l|}{2.096}         & 0.013546                          \\ \cline{2-8} 
+                                           & \textbf{40000}                    & \multicolumn{1}{l|}{0.3948}        & 0.016991                          & \multicolumn{1}{l|}{1.2696}        & 0.064392                          & \multicolumn{1}{l|}{2.2456}        & 0.086921                          \\ \cline{2-8} 
+                                           & \textbf{50000}                    & \multicolumn{1}{l|}{0.416}         & 0.008396                          & \multicolumn{1}{l|}{1.2358}        & 0.069132                          & \multicolumn{1}{l|}{2.201}         & 0.101656                          \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[]
+\begin{tabular}{|c|c|ll|ll|ll|}
+\hline
+\multirow{2}{*}{\textbf{Modelo}}       & \multirow{2}{*}{\textbf{Muestra}} & \multicolumn{2}{c|}{\textbf{Python}}                                   & \multicolumn{2}{c|}{\textbf{Go}}                                       & \multicolumn{2}{c|}{\textbf{C++}}                                      \\ \cline{3-8} 
+                                       &                                   & \multicolumn{1}{c|}{\textbf{Mean}} & \multicolumn{1}{c|}{\textbf{STD}} & \multicolumn{1}{c|}{\textbf{Mean}} & \multicolumn{1}{c|}{\textbf{STD}} & \multicolumn{1}{c|}{\textbf{Mean}} & \multicolumn{1}{c|}{\textbf{STD}} \\ \hline
+\multirow{15}{*}{\textbf{Radix\_sort}} & \textbf{100}                      & \multicolumn{1}{l|}{0.2634}        & 0.020959                          & \multicolumn{1}{l|}{1.1764}        & 0.030435                          & \multicolumn{1}{l|}{1.8822}        & 0.015418                          \\ \cline{2-8} 
+                                       & \textbf{1000}                     & \multicolumn{1}{l|}{0.2618}        & 0.008379                          & \multicolumn{1}{l|}{1.2864}        & 0.083602                          & \multicolumn{1}{l|}{1.9426}        & 0.051432                          \\ \cline{2-8} 
+                                       & \textbf{2000}                     & \multicolumn{1}{l|}{0.2516}        & 0.004278                          & \multicolumn{1}{l|}{1.2592}        & 0.059621                          & \multicolumn{1}{l|}{1.9308}        & 0.040776                          \\ \cline{2-8} 
+                                       & \textbf{3000}                     & \multicolumn{1}{l|}{0.2662}        & 0.014202                          & \multicolumn{1}{l|}{1.3096}        & 0.053841                          & \multicolumn{1}{l|}{1.9736}        & 0.066943                          \\ \cline{2-8} 
+                                       & \textbf{4000}                     & \multicolumn{1}{l|}{0.2692}        & 0.014822                          & \multicolumn{1}{l|}{1.3178}        & 0.029987                          & \multicolumn{1}{l|}{1.9406}        & 0.038201                          \\ \cline{2-8} 
+                                       & \textbf{5000}                     & \multicolumn{1}{l|}{0.263}         & 0.003937                          & \multicolumn{1}{l|}{1.329}         & 0.015182                          & \multicolumn{1}{l|}{1.9338}        & 0.026584                          \\ \cline{2-8} 
+                                       & \textbf{6000}                     & \multicolumn{1}{l|}{0.2754}        & 0.018202                          & \multicolumn{1}{l|}{1.4128}        & 0.05396                           & \multicolumn{1}{l|}{2.0138}        & 0.078776                          \\ \cline{2-8} 
+                                       & \textbf{7000}                     & \multicolumn{1}{l|}{0.272}         & 0.005339                          & \multicolumn{1}{l|}{1.4406}        & 0.051013                          & \multicolumn{1}{l|}{1.9438}        & 0.02336                           \\ \cline{2-8} 
+                                       & \textbf{8000}                     & \multicolumn{1}{l|}{0.2684}        & 0.002793                          & \multicolumn{1}{l|}{1.4512}        & 0.068189                          & \multicolumn{1}{l|}{1.9428}        & 0.028735                          \\ \cline{2-8} 
+                                       & \textbf{9000}                     & \multicolumn{1}{l|}{0.298}         & 0.029589                          & \multicolumn{1}{l|}{1.4546}        & 0.038798                          & \multicolumn{1}{l|}{1.9104}        & 0.011696                          \\ \cline{2-8} 
+                                       & \textbf{10000}                    & \multicolumn{1}{l|}{0.2768}        & 0.006058                          & \multicolumn{1}{l|}{1.5274}        & 0.04104                           & \multicolumn{1}{l|}{1.997}         & 0.065639                          \\ \cline{2-8} 
+                                       & \textbf{20000}                    & \multicolumn{1}{l|}{0.3482}        & 0.032935                          & \multicolumn{1}{l|}{1.7324}        & 0.042864                          & \multicolumn{1}{l|}{2.0226}        & 0.073231                          \\ \cline{2-8} 
+                                       & \textbf{30000}                    & \multicolumn{1}{l|}{0.3434}        & 0.012954                          & \multicolumn{1}{l|}{1.802}         & 0.053315                          & \multicolumn{1}{l|}{1.9934}        & 0.021161                          \\ \cline{2-8} 
+                                       & \textbf{40000}                    & \multicolumn{1}{l|}{0.372}         & 0.007314                          & \multicolumn{1}{l|}{1.8158}        & 0.025173                          & \multicolumn{1}{l|}{2.045}         & 0.067915                          \\ \cline{2-8} 
+                                       & \textbf{50000}                    & \multicolumn{1}{l|}{0.4054}        & 0.021732                          & \multicolumn{1}{l|}{1.861}         & 0.035377                          & \multicolumn{1}{l|}{2.0952}        & 0.085125                          \\ \hline
+\end{tabular}
+\end{table}
+\newpage\
+\subsection{Gráficos}
+Con la tabla anterior se realizaron tres tipos de analisis
+\singlespacing\begin{itemize}
+  \item  Tiempo de Procesamiento por algoritmo.
+  \item Tiempo de procesamiento por lenguaje de programación.
+  \item Desviación Estándar.
+\end{itemize}
+\center\includegraphics[trim={0.1cm 0.2cm 0cm 0.6cm},clip,scale=0.5]{Tiempo de Procesamiento vs Tamaño de lista 1.png}
+\center Figura 1 Tiempo de procesamiento vs Tamaño de Lista - Elaboración propia
+\center\includegraphics[trim={0.1cm 0.2cm 0cm 0.6cm},clip,scale=0.5]{SDvsTL.png}
+\center Figura 2 Desviación Standard vs Tamaño de Lista - Elaboración propia
+\center\includegraphics[trim={0.1cm 0.2cm 0cm 0.6cm},clip,scale=0.5]{Tiempo de Procesamiento vs Tamaño de lista x lenguaje de prog.png}
+\center Figura 3 Tiempo de procesamiento vs Tamaño de Lista - Lenguaje de Programación - Elaboración propia
+\center\includegraphics[trim={0.1cm 0.2cm 0cm 0.6cm},clip,scale=0.5]{Tiempo de Procesamiento vs Tamaño de lista 2.png}
+\center Figura 4 Tiempo de procesamiento vs Tamaño de Lista - Elaboración propia
+\newpage\
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Algoritmos y Estructura de datos}
+\rhead{Práctica 1}
+\chead{UNSA}
+\rfoot{\thepage}{}
+\begin{flushleft}
+\section{Conclusiones}
+\end{flushleft}
+\doublespacing\begin{itemize}
+  \item El algoritmo que tuvo mejor resultado fue el Radix sort y en el lenguaje de ería el python.
+  \item En las pruebas realizadas se puede considerar como mejor algoritmo el radix siendo casi similar a los demas algoritmos a excepción de Insert que tiene un costo de $n^2$
+  \item El lenguaje a parte de su sencillez para programar tiene los tiempos mas bajos a excepción del modelo Insert, ademas tiene poca variabilidad en sus tiempos. 
+
+\end{itemize}
+\newpage\addcontentsline{toc}{section}{References}\renewcommand{\footrulewidth}{1pt}
+\pagestyle{plain}
+\begin{thebibliography}{99}
+    \bibitem{Villegas Jaramillo Eduardo et all}Villegas Jaramillo Eduardo et all, {\it Análisis y diseño de algoritmos - Un enfoque práctico.} Editorial Universidad Nacional de Colombia, Manizales 2016.
+\end{thebibliography}
+
+\end{document}
+
